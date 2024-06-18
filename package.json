@@ -1,0 +1,15 @@
+{
+  "name": "highlayer-cli",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.24.7",
+    "bcrypto": "^5.5.2",
+    "commander": "^12.1.0",
+    "esbuild": "^0.21.5",
+    "highlayer-sdk": "^0.1.17",
+    "readline-sync": "^1.4.10",
+    "replace-in-file": "^7.2.0"
+  }
+}
