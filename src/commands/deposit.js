@@ -11,6 +11,7 @@ const crypto = require("crypto");
 
 module.exports = async (options) => {
   let walletData;
+  console.log(options.alans);
   if (!options.alans) {
     return console.error(
       "❌ You must add an --alans param to indicate how much you'd like to deposit"
@@ -57,6 +58,8 @@ module.exports = async (options) => {
         highlayer.Actions.sequencerDeposit({ amount: options.alans }),
       ]);
 
+    console.log(transaction);
+
     const depositEstimatedFee = await SigningClinet.getTransactionFee(
       transaction
     );
@@ -84,6 +87,8 @@ module.exports = async (options) => {
       }),
       highlayer.Actions.sequencerDeposit({ amount: options.alans }),
     ]);
+
+    console.log(transaction.actions);
 
     const uploadContractData = await SigningClinet.signAndBroadcast(
       transaction

@@ -51,7 +51,7 @@ program
   .description(
     "Deposit some alans into your sequencer balance, to pay sequencer processing fee"
   )
-  .option("-a, --alans amount", "How many alans you will be depositing")
+  .option("-a, --alans <amount>", "How many alans you will be depositing")
   .action(async (options) => {
     await require("./commands/deposit")(options);
   });
