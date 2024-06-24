@@ -85,6 +85,11 @@ module.exports = async (dir, options) => {
       }),
     ]);
 
+  const stubGenesisActionsTx=new highlayer.TransactionBuilder()
+  .setAddress("hlcontract100000000000000000000000000000000000000000000000000000000000")
+  .setActions(genesisActions)
+  const gasForInitActions=await client.getTransactionFee(stubGenesisActionsTx)
+  
   const createContract = new highlayer.TransactionBuilder()
     .setAddress(walletData.address)
     .addActions([
@@ -92,7 +97,7 @@ module.exports = async (dir, options) => {
         sourceId:
           "hlcontract1q0q8f3mgkax5lvc3hnedf54dtktmzap2v2z9flagt2z3jhvfwtwgq95anla", // Place holder contract, just so fee is accurate
         initActions: genesisActions,
-        gasForInitActions: genesisActions[0].params.amount,
+        gasForInitActions,
       }),
     ]);
 
@@ -137,6 +142,7 @@ module.exports = async (dir, options) => {
     );
   }
 
+
   createContract.setActions([
     highlayer.Actions.allocateGas({
       amount: createContractEstimatedGas.gasNeeded,
@@ -145,7 +151,7 @@ module.exports = async (dir, options) => {
     highlayer.Actions.createContract({
       sourceId: sourceId,
       initActions: genesisActions,
-      gasForInitActions: genesisActions[0].params.amount,
+      gasForInitActions,
     }),
   ]);
 
