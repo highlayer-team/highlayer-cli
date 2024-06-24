@@ -97,11 +97,10 @@ module.exports = async (dir, options) => {
         sourceId:
           "hlcontract1q0q8f3mgkax5lvc3hnedf54dtktmzap2v2z9flagt2z3jhvfwtwgq95anla", // Place holder contract, just so fee is accurate
         initActions: genesisActions,
-        gasForInitActions,
+        gasForInitActions:gasForInitActions.gasNeeded,
       }),
     ]);
 
-  console.log(createContract.actions);
 
   const uploadEstimatedGas = await client.getTransactionFee(uploadData);
   const createContractEstimatedGas = await client.getTransactionFee(
@@ -116,7 +115,6 @@ module.exports = async (dir, options) => {
       price: 1,
     })
   );
-
   console.log(
     `🛠️  Upload contract fee ~${totalFee} Alans (${highlayer.AlanToHi(
       totalFee
@@ -151,7 +149,7 @@ module.exports = async (dir, options) => {
     highlayer.Actions.createContract({
       sourceId: sourceId,
       initActions: genesisActions,
-      gasForInitActions,
+      gasForInitActions:gasForInitActions.gasNeeded,
     }),
   ]);
 
