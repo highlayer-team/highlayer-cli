@@ -27,6 +27,10 @@ program
 program
   .command("deploy [dir]")
   .description("Deploys contract source & instantiates a new contract")
+  .option(
+    "--actions <actions file>",
+    "The actions your contract runs when its created"
+  )
   .action(async (dir, options) => {
     await require("./commands/deploy")(dir, options);
   });
@@ -40,6 +44,16 @@ program
   )
   .action((privateKey, address, options) => {
     require("./commands/set")(privateKey, address, options);
+  });
+
+program
+  .command("deposit")
+  .description(
+    "Deposit some alans into your sequencer balance, to pay sequencer processing fee"
+  )
+  .option("-a, --alans amount", "How many alans you will be depositing")
+  .action(async (options) => {
+    await require("./commands/deposit")(options);
   });
 
 program.parse(process.argv);

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
     "bcrypto": "^5.5.2",
     "commander": "^12.1.0",
     "esbuild": "^0.21.5",

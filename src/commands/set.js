@@ -11,6 +11,11 @@ module.exports = (privateKey, address, options) => {
     address,
     encrypted: false,
   };
+  let genesis;
+  if (options.actions) {
+  } else {
+    return console.error("❌ You must provide a --actions param");
+  }
   if (options.password) {
     const retypedPassword = readlineSync.question("Retype password: ", {
       hideEchoBack: true,

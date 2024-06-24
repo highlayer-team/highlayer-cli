@@ -3,6 +3,21 @@ const replace = require("replace-in-file");
 const babel = require("@babel/core");
 const fs = require("fs");
 
+const babelOptions = {
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          ie: "11",
+        },
+        forceAllTransforms: true,
+      },
+    ],
+  ],
+  plugins: [],
+};
+
 module.exports = (dir, options) => {
   let contractFolder = dir ? dir : "src";
 
@@ -41,9 +56,12 @@ module.exports = (dir, options) => {
       });
       babel.transform(
         fs.readFileSync("./dist/contract.js", "utf8"),
-        { targets: ["ie 11"] },
+        babelOptions,
         function (err, result) {
-          fs.writeFileSync("./dist/contract.js", result.code);
+          fs.writeFileSync(
+            "./dist/contract.js",
+            result.code.slice("'use strict';".length)
+          );
         }
       );
       console.log("✅ Built successfully!");

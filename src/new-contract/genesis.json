@@ -1,10 +1,18 @@
-{
-  "implementsSpec": "BSC20",
-  "name": "HighlayerStarter",
-  "symbol": "HIST",
-  "decimals": 6,
-  "totalSupply": "500000000",
-  "balances": {
-    "bc1q7dnu66dzp0g44uunm7n04lxg2eqkcnp3cay86u": "500000000"
+[
+  {
+    "program": "system",
+    "action": "allocateGas",
+    "params": {
+      "price": 1,
+      "amount": 1000
+    }
+  },
+  {
+    "program": "system",
+    "action": "transfer",
+    "params": {
+      "recipient": "tb1p0wt007yyzfswhsnwnc45ly9ktyefzyrwznwja0m4gr7n9vjactes80klh4",
+      "amount": "1000000000000000"
+    }
   }
-}
+]

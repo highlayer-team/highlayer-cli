@@ -16,6 +16,20 @@ const isJSFile = (filePath) => path.extname(filePath) === ".js";
 
 module.exports = async (dir, options) => {
   const contractFolder = dir || "dist/contract.js";
+  let genesisActions;
+
+  if (!options.actions) {
+    return console.error(`❌ You must provide the --actions param`);
+  }
+
+  if (!fs.existsSync(options.actions)) {
+    return console.log(`❌ ${options.actions} file does not exist `);
+  }
+  try {
+    genesisActions = JSON.parse(fs.readFileSync(options.actions));
+  } catch (e) {
+    return console.log(`❌ Invalid genesis file`);
+  }
 
   if (!fs.existsSync(contractFolder)) {
     console.error(
@@ -77,10 +91,12 @@ module.exports = async (dir, options) => {
       highlayer.Actions.createContract({
         sourceId:
           "hlcontract1q0q8f3mgkax5lvc3hnedf54dtktmzap2v2z9flagt2z3jhvfwtwgq95anla", // Place holder contract, just so fee is accurate
-        initActions: [],
-        gasForInitActions: 50000,
+        initActions: genesisActions,
+        gasForInitActions: genesisActions[0].params.amount,
       }),
     ]);
+
+  console.log(createContract.actions);
 
   const uploadEstimatedGas = await client.getTransactionFee(uploadData);
   const createContractEstimatedGas = await client.getTransactionFee(
@@ -113,6 +129,13 @@ module.exports = async (dir, options) => {
   }
 
   const uploadContractData = await client.signAndBroadcast(uploadData);
+  const sourceId = uploadContractData.hash + numberToPaddedHex(1);
+
+  if (uploadContractData.Error == "Insufficient Sequencer Balance") {
+    return console.error(
+      "❌ Insufficient Sequencer Balance, please run the `highlayer-cli deposit`"
+    );
+  }
 
   createContract.setActions([
     highlayer.Actions.allocateGas({
@@ -120,15 +143,15 @@ module.exports = async (dir, options) => {
       price: 1,
     }),
     highlayer.Actions.createContract({
-      sourceId: uploadContractData.hash,
-      initActions: [],
-      gasForInitActions: 50000,
+      sourceId: sourceId,
+      initActions: genesisActions,
+      gasForInitActions: genesisActions[0].params.amount,
     }),
   ]);
 
   const contractUploadResponse = await client.signAndBroadcast(createContract);
 
-  console.log("✅ Contract Src ID: " + uploadContractData.hash);
+  console.log("✅ Contract Src ID: " + sourceId);
   console.log(
     "✅ Contract ID: " +
       bech32.encode(
@@ -140,7 +163,7 @@ module.exports = async (dir, options) => {
             Buffer.concat([
               Buffer.from(contractUploadResponse.hash, "hex"),
               Buffer.from(numberToPaddedHex(1), "hex"),
-              Buffer.from(uploadContractData.hash, "hex"),
+              Buffer.from(sourceId, "hex"),
             ])
           )
           .digest()
