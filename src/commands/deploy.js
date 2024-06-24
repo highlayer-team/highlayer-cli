@@ -162,7 +162,7 @@ module.exports = async (dir, options) => {
         "hlcontract",
         0,
         crypto
-          .createHash("sha256")
+          .createHash("blake2s256")
           .update(
             Buffer.concat([
               Buffer.from(contractUploadResponse.hash, "hex"),
