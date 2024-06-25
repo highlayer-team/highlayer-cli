@@ -1,7 +1,7 @@
 {
   "name": "highlayer-cli",
   "version": "0.0.4",
-  "main": "src/index.js",
+  "main": "src/api.js",
   "license": "MIT",
   "bin": {
     "highlayer-cli": "src/index.js"

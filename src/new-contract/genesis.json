@@ -1,18 +1,10 @@
 [
   {
-    "program": "system",
-    "action": "allocateGas",
-    "params": {
-      "price": 1,
-      "amount": 1000
-    }
-  },
-  {
-    "program": "system",
-    "action": "transfer",
-    "params": {
-      "recipient": "tb1p0wt007yyzfswhsnwnc45ly9ktyefzyrwznwja0m4gr7n9vjactes80klh4",
-      "amount": "1000000000000000"
+    "program":"system",
+    "action":"kvStore",
+    "params":{
+      "key":"balances.yourAddress",
+      "value":"1000000"
     }
   }
 ]

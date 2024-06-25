@@ -1,5 +1,5 @@
 const Big = require("big.js");
-module.exports = function (transaction) {
+module.exports = function (transaction,changes) {
   ContractAssert(
     typeof transaction.params.amount == "string" && !isNaN(amount),
     "Invalid amount provided"
@@ -13,8 +13,8 @@ module.exports = function (transaction) {
   const amount = Big(transaction.params.amount);
 
   ContractAssert(
-    amount.c == "0",
+    amount.mod(1).eq(0),
     "Cannot approve spending fraction of minimal unit"
   );
-  changes.push(KV.set(`allowances.${caller}.${spender}`, amount.toString()));
+  changes.push(KV.set(`allowances.${transaction.sender}.${spender}`, amount.toString()));
 };

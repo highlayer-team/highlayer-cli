@@ -4,7 +4,7 @@ const burn = require("./functions/burn.js");
 const transferFrom = require("./functions/transferFrom.js");
 
 export function onTransaction(transaction) {
-  let actionsToDo = [];
+  let changes = [];
   if (
     !transaction.params ||
     typeof transaction.params !== "object" ||
@@ -26,11 +26,11 @@ export function onTransaction(transaction) {
   }
 
   try {
-    selectedFunction(action, actionsToDo);
-    return { finalizerActions: actionsToDo };
+    selectedFunction(transaction, changes);
+    return changes;
   } catch (error) {
     ContractError(
-      `Error executing function '${transaction.action}': ${error.message}`
+      `'${transaction.action}': ${error.message}`
     );
   }
 }
