@@ -1,6 +1,5 @@
 const highlayer = require("highlayer-sdk");
-const {TransactionSigner, getHighlayerCliAddress}=require("highlayer-cli")
-const fs = require("fs");
+const { TransactionSigner, getHighlayerCliAddress } = require("highlayer-cli");
 
 (async () => {
   const client = new highlayer.SigningHighlayerClient({
@@ -15,7 +14,11 @@ const fs = require("fs");
         amount: 5000000,
         price: 1,
       }),
-      {program:"yourContractId",action:"transfer",params:{to:"test", amount:'5000'}},
+      {
+        program: "yourContractId",
+        action: "test",
+        params: {},
+      },
     ]);
 
   console.log(await client.signAndBroadcast(transaction));

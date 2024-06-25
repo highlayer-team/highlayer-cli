@@ -20,8 +20,12 @@ program
 program
   .command("init <dir>")
   .description("Initilize a new Highlayer app")
-  .action((dir) => {
-    require("./commands/init")(dir);
+  .option(
+    "--template <template>",
+    "Pick which type of template contract you want"
+  )
+  .action((dir, options) => {
+    require("./commands/init")(dir, options);
   });
 
 program

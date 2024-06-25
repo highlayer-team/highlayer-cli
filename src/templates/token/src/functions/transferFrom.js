@@ -1,7 +1,8 @@
 const Big = require("big.js");
-module.exports = function (transaction,changes) {
+module.exports = function (transaction, changes) {
   ContractAssert(
-    typeof transaction.params.amount == "string" && !isNaN(transaction.params.amount),
+    typeof transaction.params.amount == "string" &&
+      !isNaN(transaction.params.amount),
     "Invalid amount provided"
   );
   ContractAssert(
@@ -15,13 +16,12 @@ module.exports = function (transaction,changes) {
 
   const to = transaction.params.to;
   const from = transaction.params.from;
-  const allowance = Big(KV.get(`allowances.${from}.${transaction.sender}`) || "0");
+  const allowance = Big(
+    KV.get(`allowances.${from}.${transaction.sender}`) || "0"
+  );
   const amount = Big(transaction.params.amount);
 
-  ContractAssert(
-    amount.mod(1).eq(0),
-    "Cannot spend fraction of minimal unit"
-  );
+  ContractAssert(amount.mod(1).eq(0), "Cannot spend fraction of minimal unit");
   ContractAssert(allowance.gte(amount), "Trying to spend more than allowed");
 
   const senderBalance = Big(KV.get(`balances.${from}`) || "0");
@@ -33,7 +33,10 @@ module.exports = function (transaction,changes) {
   );
 
   changes.push(
-    KV.set(`allowances.${from}.${transaction.sender}`, allowance.minus(amount).toString()),
+    KV.set(
+      `allowances.${from}.${transaction.sender}`,
+      allowance.minus(amount).toString()
+    ),
     KV.set(`balances.${from}`, senderBalance.minus(amount).toString()),
     KV.set(`balances.${to}`, receiverBalance.plus(amount).toString())
   );

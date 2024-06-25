@@ -1,10 +1,10 @@
 {
-  "name": "highlayer-starter",
+  "name": "highlayer-token-starter",
   "version": "1.0.0",
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
     "highlayer-sdk": "^0.1.17",
-    "@babel/preset-env":"latest"
+    "@babel/preset-env": "latest"
   }
 }

@@ -1,7 +1,4 @@
-const transfer = require("./functions/transfer.js");
-const approve = require("./functions/approve.js");
-const burn = require("./functions/burn.js");
-const transferFrom = require("./functions/transferFrom.js");
+const starter = require("./functions/starter.js");
 
 export function onTransaction(transaction) {
   let changes = [];
@@ -14,10 +11,7 @@ export function onTransaction(transaction) {
   }
 
   const functionMap = {
-    transfer: transfer,
-    burn: burn,
-    approve: approve,
-    transferFrom: transferFrom,
+    starter: starter,
   };
 
   const selectedFunction = functionMap[transaction.action];
@@ -29,8 +23,6 @@ export function onTransaction(transaction) {
     selectedFunction(transaction, changes);
     return changes;
   } catch (error) {
-    ContractError(
-      `'${transaction.action}': ${error.message}`
-    );
+    ContractError(`'${transaction.action}': ${error.message}`);
   }
 }
