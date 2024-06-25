@@ -1,6 +1,7 @@
 const { decrypt } = require("./helpers");
 const readlineSync = require("readline-sync");
 const highlayer = require("highlayer-sdk");
+const path=require('path')
 const fs=require('fs')
 function TransactionSigner(transactionData){
     let walletData;
