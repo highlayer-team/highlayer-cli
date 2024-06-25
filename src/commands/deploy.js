@@ -69,12 +69,10 @@ module.exports = async (dir, options) => {
   const client = new highlayer.SigningHighlayerClient({
     sequencer: "http://51.159.210.149:2880",
     node: "http://51.159.210.149:3000",
-    signingFunction: (data) =>
-      highlayer.bip322.Signer.sign(
-        walletData.privateKey,
-        walletData.address,
-        data
-      ),
+    signingFunction: highlayer.PrivateKeySigner(
+      walletData.privateKey,
+      walletData.address
+    ),
   });
 
   const uploadData = new highlayer.TransactionBuilder()
@@ -85,11 +83,15 @@ module.exports = async (dir, options) => {
       }),
     ]);
 
-  const stubGenesisActionsTx=new highlayer.TransactionBuilder()
-  .setAddress("hlcontract100000000000000000000000000000000000000000000000000000000000")
-  .setActions(genesisActions)
-  const gasForInitActions=await client.getTransactionFee(stubGenesisActionsTx)
-  
+  const stubGenesisActionsTx = new highlayer.TransactionBuilder()
+    .setAddress(
+      "hlcontract100000000000000000000000000000000000000000000000000000000000"
+    )
+    .setActions(genesisActions);
+  const gasForInitActions = await client.getTransactionFee(
+    stubGenesisActionsTx
+  );
+
   const createContract = new highlayer.TransactionBuilder()
     .setAddress(walletData.address)
     .addActions([
@@ -97,10 +99,9 @@ module.exports = async (dir, options) => {
         sourceId:
           "hlcontract1q0q8f3mgkax5lvc3hnedf54dtktmzap2v2z9flagt2z3jhvfwtwgq95anla", // Place holder contract, just so fee is accurate
         initActions: genesisActions,
-        gasForInitActions:gasForInitActions.gasNeeded,
+        gasForInitActions: gasForInitActions.gasNeeded,
       }),
     ]);
-
 
   const uploadEstimatedGas = await client.getTransactionFee(uploadData);
   const createContractEstimatedGas = await client.getTransactionFee(
@@ -140,7 +141,6 @@ module.exports = async (dir, options) => {
     );
   }
 
-
   createContract.setActions([
     highlayer.Actions.allocateGas({
       amount: createContractEstimatedGas.gasNeeded,
@@ -149,7 +149,7 @@ module.exports = async (dir, options) => {
     highlayer.Actions.createContract({
       sourceId: sourceId,
       initActions: genesisActions,
-      gasForInitActions:gasForInitActions.gasNeeded,
+      gasForInitActions: gasForInitActions.gasNeeded,
     }),
   ]);
 

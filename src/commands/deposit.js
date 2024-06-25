@@ -11,7 +11,6 @@ const crypto = require("crypto");
 
 module.exports = async (options) => {
   let walletData;
-  console.log(options.alans);
   if (!options.alans) {
     return console.error(
       "❌ You must add an --alans param to indicate how much you'd like to deposit"
@@ -43,13 +42,10 @@ module.exports = async (options) => {
     let SigningClinet = new highlayer.SigningHighlayerClient({
       sequencer: "http://51.159.210.149:2880",
       node: "http://51.159.210.149:3000",
-      signingFunction: function signer(data) {
-        return highlayer.bip322.Signer.sign(
-          walletData.privateKey,
-          walletData.address,
-          data
-        );
-      },
+      signingFunction: highlayer.PrivateKeySigner(
+        walletData.privateKey,
+        walletData.address
+      ),
     });
 
     const transaction = new highlayer.TransactionBuilder()
@@ -57,8 +53,6 @@ module.exports = async (options) => {
       .addActions([
         highlayer.Actions.sequencerDeposit({ amount: options.alans }),
       ]);
-
-    console.log(transaction);
 
     const depositEstimatedFee = await SigningClinet.getTransactionFee(
       transaction
@@ -87,8 +81,6 @@ module.exports = async (options) => {
       }),
       highlayer.Actions.sequencerDeposit({ amount: options.alans }),
     ]);
-
-    console.log(transaction.actions);
 
     const uploadContractData = await SigningClinet.signAndBroadcast(
       transaction
