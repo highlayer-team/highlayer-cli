@@ -1,4 +1,4 @@
-const { decrypt } = require("../helpers");
+const { decrypt } = require("./helpers");
 const readlineSync = require("readline-sync");
 const highlayer = require("highlayer-sdk");
 const fs=require('fs')
