@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "license": "MIT",
   "dependencies": {
-    "highlayer-sdk": "latest"
+    "highlayer-sdk": "latest",
+    "@babel/preset-env":"latest"
   }
 }
