@@ -29,6 +29,8 @@ function TransactionSigner(transactionData) {
     throw new Error("Cancelled");
   }
 
+  let HighlayerTx = new highlayer.HighlayerTx(transactionData);
+
   if (walletData.encrypted) {
     const typePassword = readlineSync.question("Password?: ", {
       hideEchoBack: true,
@@ -44,7 +46,7 @@ function TransactionSigner(transactionData) {
   return highlayer.bip322.Signer.sign(
     walletData.privateKey,
     walletData.address,
-    transactionData
+    HighlayerTx.rawTxID()
   );
 }
 
