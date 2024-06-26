@@ -1,8 +1,5 @@
 const highlayer = require("highlayer-sdk");
-const {
-  TransactionSigner,
-  getHighlayerCliAddress,
-} = require("highlayer-cli/api");
+const { TransactionSigner, getHighlayerCliAddress } = require("highlayer-cli");
 
 (async () => {
   const client = new highlayer.SigningHighlayerClient({
