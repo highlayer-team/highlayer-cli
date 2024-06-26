@@ -1,0 +1,10 @@
+[
+  {
+    "program": "system",
+    "action": "kvStore",
+    "params": {
+      "key": "counter",
+      "value": 0
+    }
+  }
+]
