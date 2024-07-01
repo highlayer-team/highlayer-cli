@@ -1,5 +1,10 @@
 # Highlayer Starter Contract
 
+## Installing
+
+NPM:
+`npm i -g highlayer-cli`
+
 ## Init Contract
 
 This command will start your contract template with some test interactions
