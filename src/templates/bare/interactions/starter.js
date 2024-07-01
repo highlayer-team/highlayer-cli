@@ -3,7 +3,8 @@ const { TransactionSigner, getHighlayerCliAddress } = require("highlayer-cli");
 
 (async () => {
   const client = new highlayer.SigningHighlayerClient({
-    sequencer: "http://sequencer-testnet.highlayer.io/",
+    sequencer: "http://sequencer.highlayer.io/",
+    node: "https://seed-node.highlayer.io/",
     signingFunction: TransactionSigner,
   });
 

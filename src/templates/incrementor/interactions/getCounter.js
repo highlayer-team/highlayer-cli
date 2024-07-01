@@ -4,7 +4,8 @@ const Key = "counter";
 
 (async () => {
   let SigningClinet = new HighlayerClient({
-    node: "https://node-1.highlayer.io/",
+    sequencer: "http://sequencer.highlayer.io/",
+    node: "https://seed-node.highlayer.io/",
   });
 
   let contract = SigningClinet.KV(ContractAddress);
