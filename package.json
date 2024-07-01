@@ -1,6 +1,6 @@
 {
   "name": "highlayer-cli",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "main": "src/api.js",
   "license": "MIT",
   "bin": {
@@ -12,7 +12,7 @@
     "bcrypto": "^5.5.2",
     "commander": "^12.1.0",
     "esbuild": "^0.21.5",
-    "highlayer-sdk": "^0.1.21",
+    "highlayer-sdk": "^0.1.22",
     "readline-sync": "^1.4.10",
     "replace-in-file": "^7.2.0"
   }

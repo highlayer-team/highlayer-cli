@@ -40,8 +40,8 @@ module.exports = async (options) => {
     }
 
     let SigningClinet = new highlayer.SigningHighlayerClient({
-      sequencer: "http://51.159.210.149:2880",
-      node: "http://51.159.210.149:3000",
+      sequencer: "http://sequencer-testnet.highlayer.io/",
+      node: "https://node-1.highlayer.io/",
       signingFunction: highlayer.PrivateKeySigner(
         walletData.privateKey,
         walletData.address
