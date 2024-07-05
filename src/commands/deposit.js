@@ -1,13 +1,8 @@
-const { build } = require("esbuild");
-const replace = require("replace-in-file");
-const babel = require("@babel/core");
 const path = require("path");
 const fs = require("fs");
 const { decrypt } = require("../helpers");
 const highlayer = require("highlayer-sdk");
 const readlineSync = require("readline-sync");
-const bech32 = require("bcrypto/lib/encoding/bech32m");
-const crypto = require("crypto");
 
 module.exports = async (options) => {
   let walletData;
@@ -38,56 +33,46 @@ module.exports = async (options) => {
     } catch (e) {
       return console.error("❌ Invalid Password");
     }
+  }
 
-    let SigningClinet = new highlayer.SigningHighlayerClient({
-      sequencer: "http://sequencer.highlayer.io/",
-      node: "https://seed-node.highlayer.io/",
-      signingFunction: highlayer.PrivateKeySigner(
-        walletData.privateKey,
-        walletData.address
-      ),
-    });
+  let SigningClinet = new highlayer.SigningHighlayerClient({
+    sequencer: "http://sequencer.highlayer.io/",
+    node: "https://seed-node.highlayer.io/",
+    signingFunction: highlayer.PrivateKeySigner(
+      walletData.privateKey,
+      walletData.address
+    ),
+  });
 
-    const transaction = new highlayer.TransactionBuilder()
-      .setAddress(walletData.address)
-      .addActions([
-        highlayer.Actions.sequencerDeposit({ amount: options.alans }),
-      ]);
-
-    const depositEstimatedFee = await SigningClinet.getTransactionFee(
-      transaction
-    );
-
-    console.log(
-      `🛠️  Upload contract fee ~${
-        depositEstimatedFee.gasNeeded
-      } Alans (${highlayer.AlanToHi(depositEstimatedFee.gasNeeded)} HI) 🛠️`
-    );
-
-    const verifyFee = readlineSync.question(`Proceed? Y/N: `).toLowerCase();
-
-    if (verifyFee.startsWith("n")) {
-      console.log("❌ Canceling");
-      return;
-    } else if (!verifyFee.startsWith("y")) {
-      console.log("❌ Canceling, unsupported input.");
-      return;
-    }
-
-    transaction.setActions([
-      highlayer.Actions.allocateGas({
-        amount: depositEstimatedFee.gasNeeded,
-        price: 1,
-      }),
+  const transaction = new highlayer.TransactionBuilder()
+    .setAddress(walletData.address)
+    .addActions([
       highlayer.Actions.sequencerDeposit({ amount: options.alans }),
     ]);
 
-    const uploadContractData = await SigningClinet.signAndBroadcast(
-      transaction
-    );
+  const depositEstimatedFee = await SigningClinet.getTransactionFee(
+    transaction
+  );
 
-    console.log(`Sequencer Response: `);
-    console.log(uploadContractData);
-    console.log("✅ Successfully Depositted");
+  console.log(
+    `🛠️  Upload contract fee ~${
+      depositEstimatedFee.gasNeeded
+    } Alans (${highlayer.AlanToHi(depositEstimatedFee.gasNeeded)} HI) 🛠️`
+  );
+
+  const verifyFee = readlineSync.question(`Proceed? Y/N: `).toLowerCase();
+
+  if (verifyFee.startsWith("n")) {
+    console.log("❌ Canceling");
+    return;
+  } else if (!verifyFee.startsWith("y")) {
+    console.log("❌ Canceling, unsupported input.");
+    return;
   }
+
+  const uploadContractData = await SigningClinet.signAndBroadcast(transaction);
+
+  console.log(`Sequencer Response: `);
+  console.log(uploadContractData);
+  console.log("✅ Successfully Depositted");
 };

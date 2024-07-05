@@ -1,6 +1,3 @@
-const { build } = require("esbuild");
-const replace = require("replace-in-file");
-const babel = require("@babel/core");
 const path = require("path");
 const fs = require("fs");
 const { decrypt } = require("../helpers");

@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
 const readlineSync = require("readline-sync");
 
 const { encrypt } = require("../helpers");
