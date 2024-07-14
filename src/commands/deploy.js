@@ -162,7 +162,10 @@ module.exports = async (dir, options) => {
           .createHash("blake2s256")
           .update(
             Buffer.concat([
-              Buffer.from(contractUploadResponse.hash, "hex"),
+              Buffer.from(
+                new highlayer.HighlayerTx(createContract).txID(),
+                "hex"
+              ),
               Buffer.from(numberToPaddedHex(1), "hex"),
               Buffer.from(sourceId, "hex"),
             ])
