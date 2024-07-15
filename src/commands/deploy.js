@@ -130,7 +130,8 @@ module.exports = async (dir, options) => {
   }
 
   const uploadContractData = await client.signAndBroadcast(uploadData);
-  const sourceId = uploadContractData.hash + numberToPaddedHex(1);
+  const sourceId =
+    new highlayer.HighlayerTx(uploadData).txID() + numberToPaddedHex(1);
 
   if (uploadContractData.Error == "Insufficient Sequencer Balance") {
     return console.error(
